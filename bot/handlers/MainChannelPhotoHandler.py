@@ -1,6 +1,7 @@
 from bot.DaHandler import DaHandler
 from telegram import ParseMode
 import bot
+from bot.DaMsg import DaMsg
 
 
 class MainChannelPhotoHandler(DaHandler):
@@ -8,7 +9,8 @@ class MainChannelPhotoHandler(DaHandler):
     def handler(self, update, context):
         if bot.config['MAIN_CANNEL_ID'] == str(update.effective_chat.id):
             if update.effective_message.caption is not None:
-                text = "{text} \n\n {bot_link}".format(text=update.effective_message.caption,
+                da_msg = DaMsg(update.effective_message)
+                text = "{text} \n\n {bot_link}".format(text=da_msg.stylizedCaption,
                                                        bot_link="&#128073; <a href='https://t.me/prosmi_bot'>Предложить новость</a>")
 
                 context.bot.editMessageCaption(chat_id=update.effective_chat.id,

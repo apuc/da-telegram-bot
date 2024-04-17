@@ -9,6 +9,8 @@ from bot.handlers.CopyFromMainChannelHandler import CopyFromMainChannelHandler
 from bot.handlers.CopyFromMainChannelPhotoHandler import CopyFromMainChannelPhotoHandler
 from bot.handlers.CopyFromMainChannelVideoHandler import CopyFromMainChannelVideoHandler
 from bot.handlers.CopyFromTestChannelHandler import CopyFromTestChannelHandler
+from bot.handlers.TestChannelDaLinkHandler import TestChannelDaLinkHandler
+from bot.handlers.MainChannelDaLinkHandler import MainChannelDaLinkHandler
 
 config = dotenv_values(".env.local")
 
@@ -17,6 +19,11 @@ text_msg_handlers = [
     TestChannelHandler(),
     CopyFromMainChannelHandler(),
     CopyFromTestChannelHandler()
+]
+
+da_text_msg_scenario = [
+    MainChannelDaLinkHandler(),
+    TestChannelDaLinkHandler()
 ]
 
 photo_msg_handlers = [

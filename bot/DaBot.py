@@ -5,8 +5,10 @@ from bot.msg.ExchangeMsg import ExchangeMsg
 from bot.msg.CryptocurrencyMsg import CryptocurrencyMsg
 from smtp.Mailer import Mailer
 from pycoingecko import CoinGeckoAPI
+from urllib.parse import urlparse
+import re
 
-from bot import config, text_msg_handlers, photo_msg_handlers, video_msg_handlers
+from bot import config, text_msg_handlers, photo_msg_handlers, video_msg_handlers, da_text_msg_scenario
 
 
 class DaBot:
@@ -246,8 +248,19 @@ class DaBot:
             return self.SECOND
 
     def run_text_handlers(self, update, context):
-        for handler in text_msg_handlers:
+        for handler in self.get_scenario(update, context):
             handler.handler(update, context)
+
+    def get_scenario(self, update, context):
+        text = update.effective_message.text
+        s = re.search("(?P<url>https?://[^\s]+)", text)
+        if s is not None:
+            link = s.group("url")
+            domain = urlparse(link).netloc
+            if domain == config['MAP_DOMAIN']:
+                return da_text_msg_scenario
+
+        return text_msg_handlers
 
     def run_photo_handlers(self, update, context):
         for handler in photo_msg_handlers:
